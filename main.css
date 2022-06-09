@@ -1,0 +1,102 @@
+:root {
+  --system-black: #000;
+  --system-white: #fff;
+  --system-gray: #363337;
+  --system-red: #ff3b30;
+  --system-green: #34c759;
+
+  --bg: var(--system-black);
+}
+
+@font-face {
+  font-family: "SF Pro";
+  src: url("fonts/SFProText-Regular-1.ttf") format("opentype");
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  height: 5rem;
+  width: 5rem;
+  border-radius: 100%;
+  box-sizing: border-box;
+  border: 0.25rem solid var(--bg);
+  outline: var(--system-gray) solid 0.25rem;
+  background-color: var(--system-gray);
+  color: var(--system-white);
+  font-family: "SF Pro", Arial;
+  font-size: 1rem;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+h2 {
+  font-size: 4rem;
+}
+
+body {
+  background-color: var(--system-black);
+  color: var(--system-white);
+  font-family: "SF Pro", Arial;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  max-height: 900px;
+}
+
+.stopwatch-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  padding: 0 1.5rem;
+}
+
+.stopwatch-container div {
+  height: 50%;
+}
+
+.upper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.start {
+  color: var(--system-green);
+  background-color: rgba(52, 199, 89, 0.4);
+  outline: rgba(52, 199, 89, 0.4) solid 0.25rem;
+}
+
+.stop {
+  color: var(--system-red);
+  background-color: rgba(255, 59, 48, 0.4);
+  outline: rgb(255, 59, 48, 0.4) solid 0.25rem;
+}
+
+.laps-container {
+  width: 100%;
+}
+
+tr {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+td {
+  display: block;
+  text-align: left;
+  padding: 0.5rem 0;
+}
