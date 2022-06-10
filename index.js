@@ -1,4 +1,5 @@
 let startTime = 0;
+let pausedTime = 0;
 let isTiming = false;
 let totalLaps = 0;
 
@@ -16,6 +17,7 @@ setInterval(function () {
 function stopwatchReset() {
   stopwatchStop();
   startTime = 0;
+  pausedTime = 0;
   lapContainer.innerHTML = "";
   stopwatchElement.innerText = "00:00.00";
 }
@@ -30,7 +32,7 @@ function stopwatchLap() {
   let entryTime = document.createElement("td");
 
   entryKey.innerText = `Lap ${totalLaps}`;
-  entryTime.innerText = formatTime(Date.now(), startTime);
+  entryTime.innerText = formatTime(Date.now(), startTime, pausedTime);
 
   tableRow.appendChild(entryKey);
   tableRow.appendChild(entryTime);
@@ -38,10 +40,11 @@ function stopwatchLap() {
 }
 
 //TODO:  Fix jittery number changes
-//TODO:  Fix issue where after unpausing the timer includes time spent paused
 function stopwatchStart() {
   if (startTime == 0) {
     startTime = Date.now();
+  } else {
+    pausedTime = Date.now() - pausedTime;
   }
 
   isTiming = true;
@@ -56,12 +59,13 @@ function stopwatchStart() {
 
 function stopwatchRun() {
   if (isTiming) {
-    stopwatchElement.innerText = formatTime(Date.now(), startTime);
+    stopwatchElement.innerText = formatTime(Date.now(), startTime, pausedTime);
   }
 }
 
 function stopwatchStop() {
   isTiming = false;
+  pausedTime = Date.now() - pausedTime;
 
   resetLapButton.onclick = stopwatchReset;
   resetLapButton.innerText = "Reset";
@@ -72,8 +76,8 @@ function stopwatchStop() {
   stopStartButton.classList.add("start");
 }
 
-function formatTime(newestTime, oldTime) {
-  let calcTime = newestTime - oldTime;
+function formatTime(newestTime, oldTime, pausedTime) {
+  let calcTime = newestTime - pausedTime - oldTime;
   let minutes = Math.floor(calcTime / 60000);
   let seconds = Math.floor(calcTime / 1000);
   let milliseconds = calcTime % 100;
