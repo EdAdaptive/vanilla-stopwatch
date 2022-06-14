@@ -1,8 +1,9 @@
 let startTime = 0;
 let pausedTime = 0;
+let lapStartTime = 0;
+let lapPausedTime = 0;
 let isTiming = false;
 let totalLaps = 0;
-let lapStartTime = 0;
 
 const stopwatchElement = document.getElementById("stopwatch");
 const stopStartButton = document.getElementById("stop-start");
@@ -26,6 +27,7 @@ function stopwatchReset() {
 //TODO:  Add and remove lowest / highest lap indicator
 function stopwatchLap() {
   totalLaps++;
+  lapPausedTime = 0;
 
   let currentTime = Date.now();
   lapStartTime = currentTime;
@@ -35,7 +37,7 @@ function stopwatchLap() {
   let entryTime = document.createElement("span");
 
   entryKey.innerText = `Lap ${totalLaps}`;
-  entryTime.innerText = formatTime(currentTime, lapStartTime, pausedTime);
+  entryTime.innerText = formatTime(currentTime, lapStartTime, lapPausedTime);
 
   tableRow.appendChild(entryKey);
   tableRow.appendChild(entryTime);
@@ -48,6 +50,7 @@ function stopwatchStart() {
     startTime = Date.now();
   } else {
     pausedTime = Date.now() - pausedTime;
+    lapPausedTime = Date.now() - lapPausedTime;
   }
 
   isTiming = true;
@@ -79,7 +82,7 @@ function stopwatchRun() {
     lapContainer.firstChild.lastChild.innerText = formatTime(
       currentMillisecondTotal,
       lapStartTime,
-      pausedTime
+      lapPausedTime
     );
   }
 }
@@ -87,6 +90,7 @@ function stopwatchRun() {
 function stopwatchStop() {
   isTiming = false;
   pausedTime = Date.now() - pausedTime;
+  lapPausedTime = Date.now();
 
   resetLapButton.onclick = stopwatchReset;
   resetLapButton.innerText = "Reset";
@@ -98,8 +102,8 @@ function stopwatchStop() {
 }
 
 //TODO:  Fix issue where seconds can become 3 digits
-function formatTime(newestTime, oldTime, pausedTime) {
-  let calcTime = newestTime - pausedTime - oldTime;
+function formatTime(newestTime, oldTime, timeOffset) {
+  let calcTime = newestTime - timeOffset - oldTime;
   let minutes = Math.floor(calcTime / 60000);
   let seconds = Math.floor(calcTime / 1000);
   let milliseconds = Math.floor(calcTime % 100);
