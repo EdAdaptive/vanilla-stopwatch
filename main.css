@@ -13,6 +13,12 @@
   src: url("fonts/SFProText-Regular-1.ttf") format("opentype");
 }
 
+@font-face {
+  font-family: "SF Pro";
+  src: url("fonts/SFProText-Light-1.ttf") format("opentype");
+  font-weight: lighter;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -37,6 +43,7 @@ button:hover {
 
 h2 {
   font-size: 4rem;
+  font-weight: lighter;
 }
 
 body {
