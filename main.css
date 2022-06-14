@@ -40,9 +40,6 @@ h2 {
 }
 
 body {
-  background-color: var(--system-black);
-  color: var(--system-white);
-  font-family: "SF Pro", Arial;
   display: flex;
   justify-content: center;
   height: 100vh;
@@ -52,12 +49,17 @@ body {
 .stopwatch-container {
   display: flex;
   flex-direction: column;
+  background-color: var(--system-black);
+  color: var(--system-white);
+  font-family: "SF Pro", Arial;
   width: 100%;
   max-width: 300px;
   padding: 0 1.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
 }
 
-.stopwatch-container div {
+.stopwatch-container > div {
   height: 50%;
 }
 
@@ -86,16 +88,17 @@ body {
 }
 
 .laps-container {
-  width: 100%;
+  overflow-y: scroll;
+  height: 13rem;
 }
 
-tr {
+.laps-container > div {
   display: flex;
   justify-content: space-between;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-td {
+.laps-container > div > span {
   display: block;
   text-align: left;
   padding: 0.5rem 0;
