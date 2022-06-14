@@ -2,37 +2,40 @@ let startTime = 0;
 let pausedTime = 0;
 let isTiming = false;
 let totalLaps = 0;
+let lapStartTime = 0;
 
 const stopwatchElement = document.getElementById("stopwatch");
 const stopStartButton = document.getElementById("stop-start");
 const resetLapButton = document.getElementById("reset-lap");
 const lapContainer = document.getElementsByClassName("laps-container")[0];
 
-//TODO:  Take into consideration lap number increasing such as lap 1 in example
-
 setInterval(function () {
   stopwatchRun();
-}, 100);
+}, 50);
 
 function stopwatchReset() {
   stopwatchStop();
   startTime = 0;
   pausedTime = 0;
+  totalLaps = 0;
+  lapStartTime = 0;
   lapContainer.innerHTML = "";
   stopwatchElement.innerText = "00:00.00";
 }
 
 //TODO:  Add and remove lowest / highest lap indicator
-//TODO:  Change outputted times to display time since last lap, not total time
 function stopwatchLap() {
   totalLaps++;
-  //TODO:  Change to be consistent with other variables
-  let tableRow = document.createElement("tr");
-  let entryKey = document.createElement("td");
-  let entryTime = document.createElement("td");
+
+  let currentTime = Date.now();
+  lapStartTime = currentTime;
+
+  let tableRow = document.createElement("div");
+  let entryKey = document.createElement("span");
+  let entryTime = document.createElement("span");
 
   entryKey.innerText = `Lap ${totalLaps}`;
-  entryTime.innerText = formatTime(Date.now(), startTime, pausedTime);
+  entryTime.innerText = formatTime(currentTime, lapStartTime, pausedTime);
 
   tableRow.appendChild(entryKey);
   tableRow.appendChild(entryTime);
@@ -48,6 +51,10 @@ function stopwatchStart() {
   }
 
   isTiming = true;
+  if (totalLaps == 0) {
+    stopwatchLap();
+  }
+
   stopStartButton.innerText = "Stop";
   stopStartButton.classList.remove("start");
   stopStartButton.classList.add("stop");
@@ -59,7 +66,21 @@ function stopwatchStart() {
 
 function stopwatchRun() {
   if (isTiming) {
-    stopwatchElement.innerText = formatTime(Date.now(), startTime, pausedTime);
+    let currentMillisecondTotal = Date.now();
+    let currentTime = formatTime(
+      currentMillisecondTotal,
+      startTime,
+      pausedTime
+    );
+
+    stopwatchElement.innerText = currentTime;
+
+    //Updates the time of the most recent lap to match current time
+    lapContainer.firstChild.lastChild.innerText = formatTime(
+      currentMillisecondTotal,
+      lapStartTime,
+      pausedTime
+    );
   }
 }
 
@@ -76,11 +97,12 @@ function stopwatchStop() {
   stopStartButton.classList.add("start");
 }
 
+//TODO:  Fix issue where seconds can become 3 digits
 function formatTime(newestTime, oldTime, pausedTime) {
   let calcTime = newestTime - pausedTime - oldTime;
   let minutes = Math.floor(calcTime / 60000);
   let seconds = Math.floor(calcTime / 1000);
-  let milliseconds = calcTime % 100;
+  let milliseconds = Math.floor(calcTime % 100);
 
   //Keep each time segment 2 digits to be consistent with Apple Stopwatch
   if (minutes < 10) {
