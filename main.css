@@ -103,3 +103,11 @@ body {
   text-align: left;
   padding: 0.5rem 0;
 }
+
+.highest-lap {
+  color: var(--system-green);
+}
+
+.worst-lap {
+  color: var(--system-red);
+}
