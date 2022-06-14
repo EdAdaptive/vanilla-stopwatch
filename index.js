@@ -163,11 +163,11 @@ function stopwatchStop() {
   stopStartButton.classList.add("start");
 }
 
-//TODO:  Fix issue where seconds can become 3 digits
 function formatTime(newestTime, oldTime, timeOffset) {
   let calcTime = newestTime - timeOffset - oldTime;
   let minutes = Math.floor(calcTime / 60000);
-  let seconds = Math.floor(calcTime / 1000);
+  //let seconds = Math.floor(calcTime / 1000);
+  let seconds = Math.floor(calcTime / 1000) % 60;
   let milliseconds = Math.floor(calcTime % 100);
 
   //Keep each time segment 2 digits to be consistent with Apple Stopwatch
