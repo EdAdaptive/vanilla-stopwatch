@@ -41,7 +41,8 @@ button:hover {
   cursor: pointer;
 }
 
-button:active {
+button:active,
+button:focus {
   outline: rgba(54, 51, 55, 0.4) solid 0.25rem;
   background-color: rgba(54, 51, 55, 0.4);
 }
@@ -93,7 +94,8 @@ body {
   outline: rgba(52, 199, 89, 0.4) solid 0.25rem;
 }
 
-.start:active {
+.start:active,
+.start:focus {
   background-color: rgba(52, 199, 89, 0.15);
   outline: rgba(52, 199, 89, 0.15) solid 0.25rem;
 }
@@ -104,7 +106,8 @@ body {
   outline: rgb(255, 59, 48, 0.4) solid 0.25rem;
 }
 
-.stop:active {
+.stop:active,
+.stop:focus {
   background-color: rgba(255, 59, 48, 0.15);
   outline: rgb(255, 59, 48, 0.15) solid 0.25rem;
 }
