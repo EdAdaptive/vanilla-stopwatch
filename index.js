@@ -13,51 +13,51 @@ let worstLap = {
   key: 0,
 };
 
-const stopwatchElement = document.getElementById("stopwatch");
-const stopStartButton = document.getElementById("stop-start");
-const resetLapButton = document.getElementById("reset-lap");
-const lapContainer = document.getElementsByClassName("laps-container")[0];
+const $stopwatchElement = document.getElementById("stopwatch");
+const $stopStartButton = document.getElementById("stop-start");
+const $resetLapButton = document.getElementById("reset-lap");
+const $lapContainer = document.getElementsByClassName("laps-container")[0];
 
 setInterval(function () {
-  stopwatchRun();
+  runStopwatch();
 }, 50);
 
-function stopwatchReset() {
-  stopwatchStop();
+function resetStopwatch() {
+  stopStopwatch();
   startTime = 0;
   pausedTime = 0;
   totalLaps = 0;
   lapStartTime = 0;
-  lapContainer.innerHTML = "";
-  stopwatchElement.innerText = "00:00.00";
+  $lapContainer.innerHTML = "";
+  $stopwatchElement.innerText = "00:00.00";
 }
 
-function stopwatchLap() {
+function lapStopwatch() {
   let currentTime = Date.now();
   let currentLapsedTime = currentTime - lapPausedTime - lapStartTime;
 
   //The best and worst laps aren't displayed till 2 laps have elapsed
   if (totalLaps > 2) {
     if (currentLapsedTime > worstLap.time) {
-      lapContainer
+      $lapContainer
         .querySelector(`div[data-key="${worstLap.key}"]`)
         .classList.remove("worst-lap");
 
       worstLap.time = currentLapsedTime;
       worstLap.key = totalLaps;
 
-      lapContainer
+      $lapContainer
         .querySelector(`div[data-key="${worstLap.key}"]`)
         .classList.add("worst-lap");
     } else if (currentLapsedTime < bestLap.time) {
-      lapContainer
+      $lapContainer
         .querySelector(`div[data-key="${bestLap.key}"]`)
         .classList.remove("highest-lap");
 
       bestLap.time = currentLapsedTime;
       bestLap.key = totalLaps;
 
-      lapContainer
+      $lapContainer
         .querySelector(`div[data-key="${bestLap.key}"]`)
         .classList.add("highest-lap");
     }
@@ -66,7 +66,6 @@ function stopwatchLap() {
       bestLap.time = currentLapsedTime;
       bestLap.key = totalLaps;
     } else if (totalLaps === 2) {
-      console.log("Total Laps", totalLaps);
       if (bestLap.time < currentLapsedTime) {
         worstLap.time = currentLapsedTime;
         worstLap.key = totalLaps;
@@ -78,12 +77,12 @@ function stopwatchLap() {
         bestLap.key = totalLaps;
       }
 
-      lapContainer
+      $lapContainer
         .querySelector(`div[data-key="${worstLap.key}"]`)
         .classList.add("worst-lap");
 
       bestLap.time = currentLapsedTime;
-      lapContainer
+      $lapContainer
         .querySelector(`div[data-key="${bestLap.key}"]`)
         .classList.add("highest-lap");
     }
@@ -93,21 +92,21 @@ function stopwatchLap() {
   lapPausedTime = 0;
   lapStartTime = currentTime;
 
-  let tableRow = document.createElement("div");
-  tableRow.dataset.key = totalLaps;
-  let entryKey = document.createElement("span");
-  let entryTime = document.createElement("span");
+  let $tableRow = document.createElement("div");
+  $tableRow.dataset.key = totalLaps;
+  let $entryKey = document.createElement("span");
+  let $entryTime = document.createElement("span");
 
-  entryKey.innerText = `Lap ${totalLaps}`;
-  entryTime.innerText = formatTime(currentTime, lapStartTime, lapPausedTime);
+  $entryKey.innerText = `Lap ${totalLaps}`;
+  $entryTime.innerText = formatTime(currentTime, lapStartTime, lapPausedTime);
 
-  tableRow.appendChild(entryKey);
-  tableRow.appendChild(entryTime);
-  lapContainer.insertBefore(tableRow, lapContainer.firstChild);
+  $tableRow.appendChild($entryKey);
+  $tableRow.appendChild($entryTime);
+  $lapContainer.insertBefore($tableRow, $lapContainer.firstChild);
 }
 
 //TODO:  Fix jittery number changes
-function stopwatchStart() {
+function startStopwatch() {
   if (startTime == 0) {
     startTime = Date.now();
   } else {
@@ -117,19 +116,19 @@ function stopwatchStart() {
 
   isTiming = true;
   if (totalLaps == 0) {
-    stopwatchLap();
+    lapStopwatch();
   }
 
-  stopStartButton.innerText = "Stop";
-  stopStartButton.classList.remove("start");
-  stopStartButton.classList.add("stop");
-  stopStartButton.onclick = stopwatchStop;
+  $stopStartButton.innerText = "Stop";
+  $stopStartButton.classList.remove("start");
+  $stopStartButton.classList.add("stop");
+  $stopStartButton.onclick = stopStopwatch;
 
-  resetLapButton.innerText = "Lap";
-  resetLapButton.onclick = stopwatchLap;
+  $resetLapButton.innerText = "Lap";
+  $resetLapButton.onclick = lapStopwatch;
 }
 
-function stopwatchRun() {
+function runStopwatch() {
   if (isTiming) {
     let currentMillisecondTotal = Date.now();
     let currentTime = formatTime(
@@ -138,10 +137,10 @@ function stopwatchRun() {
       pausedTime
     );
 
-    stopwatchElement.innerText = currentTime;
+    $stopwatchElement.innerText = currentTime;
 
     //Updates the time of the most recent lap to match current time
-    lapContainer.firstChild.lastChild.innerText = formatTime(
+    $lapContainer.firstChild.lastChild.innerText = formatTime(
       currentMillisecondTotal,
       lapStartTime,
       lapPausedTime
@@ -149,18 +148,18 @@ function stopwatchRun() {
   }
 }
 
-function stopwatchStop() {
+function stopStopwatch() {
   isTiming = false;
   pausedTime = Date.now() - pausedTime;
   lapPausedTime = Date.now();
 
-  resetLapButton.onclick = stopwatchReset;
-  resetLapButton.innerText = "Reset";
+  $resetLapButton.onclick = resetStopwatch;
+  $resetLapButton.innerText = "Reset";
 
-  stopStartButton.onclick = stopwatchStart;
-  stopStartButton.innerText = "Start";
-  stopStartButton.classList.remove("stop");
-  stopStartButton.classList.add("start");
+  $stopStartButton.onclick = startStopwatch;
+  $stopStartButton.innerText = "Start";
+  $stopStartButton.classList.remove("stop");
+  $stopStartButton.classList.add("start");
 }
 
 function formatTime(newestTime, oldTime, timeOffset) {
