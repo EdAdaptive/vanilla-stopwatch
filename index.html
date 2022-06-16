@@ -14,15 +14,12 @@
       </div>
       <div>
         <section class="controls">
-          <button id="reset-lap" onclick="stopwatchReset()">Reset</button>
-          <button class="start" id="stop-start" onclick="startStopwatch()">
-            Start
-          </button>
+          <button id="reset-lap">Reset</button>
+          <button class="start" id="stop-start">Start</button>
         </section>
         <section class="laps-container" aria-label="Lap history"></section>
       </div>
     </div>
-    <script defer src="formatTime.js"></script>
-    <script defer src="index.js"></script>
+    <script defer type="module" src="/scripts/index.js"></script>
   </body>
 </html>

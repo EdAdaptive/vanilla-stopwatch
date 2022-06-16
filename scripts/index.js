@@ -1,3 +1,5 @@
+import { formatTime } from "/scripts/util.js";
+
 let startTime = 0;
 let pausedTime = 0;
 let lapStartTime = 0;
@@ -18,9 +20,12 @@ const $stopStartButton = document.getElementById("stop-start");
 const $resetLapButton = document.getElementById("reset-lap");
 const $lapContainer = document.getElementsByClassName("laps-container")[0];
 
+$stopStartButton.onclick = startStopwatch;
+$resetLapButton.onclick = resetStopwatch;
+
 setInterval(function () {
   runStopwatch();
-}, 50);
+}, 80);
 
 function resetStopwatch() {
   stopStopwatch();
