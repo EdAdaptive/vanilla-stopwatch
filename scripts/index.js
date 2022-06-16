@@ -1,5 +1,6 @@
 import { formatTime } from "/scripts/util.js";
 
+let stopwatchAnimation;
 let startTime = 0;
 let pausedTime = 0;
 let lapStartTime = 0;
@@ -19,13 +20,12 @@ const $stopwatchElement = document.getElementById("stopwatch");
 const $stopStartButton = document.getElementById("stop-start");
 const $resetLapButton = document.getElementById("reset-lap");
 const $lapContainer = document.getElementsByClassName("laps-container")[0];
+const startStopwatchAnimation = () => {
+  stopwatchAnimation = runStopwatch();
+};
 
 $stopStartButton.onclick = startStopwatch;
 $resetLapButton.onclick = resetStopwatch;
-
-setInterval(function () {
-  runStopwatch();
-}, 80);
 
 function resetStopwatch() {
   stopStopwatch();
@@ -110,7 +110,6 @@ function lapStopwatch() {
   $lapContainer.insertBefore($tableRow, $lapContainer.firstChild);
 }
 
-//TODO:  Fix jittery number changes
 function startStopwatch() {
   if (startTime == 0) {
     startTime = Date.now();
@@ -131,9 +130,11 @@ function startStopwatch() {
 
   $resetLapButton.innerText = "Lap";
   $resetLapButton.onclick = lapStopwatch;
+  requestAnimationFrame(startStopwatchAnimation);
 }
 
 function runStopwatch() {
+  requestAnimationFrame(startStopwatchAnimation);
   if (isTiming) {
     let currentMillisecondTotal = Date.now();
     let currentTime = formatTime(
@@ -154,6 +155,7 @@ function runStopwatch() {
 }
 
 function stopStopwatch() {
+  cancelAnimationFrame(stopwatchAnimation);
   isTiming = false;
   pausedTime = Date.now() - pausedTime;
   lapPausedTime = Date.now();
