@@ -57,6 +57,7 @@ body {
   height: 100vh;
   max-height: 900px;
   font-variant-numeric: tabular-nums;
+  user-select: none;
 }
 
 .stopwatch-container {
